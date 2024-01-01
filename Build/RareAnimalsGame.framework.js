@@ -1975,13 +1975,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  3790544: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 3790599: function($0) {performance.now = function() { return $0; };},  
- 3790647: function($0) {performance.now = function() { return $0; };},  
- 3790695: function() {performance.now = Module['emscripten_get_now_backup'];},  
- 3790750: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 3790811: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 3790875: function() {return Module.webglContextAttributes.powerPreference;}
+  3793200: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 3793255: function($0) {performance.now = function() { return $0; };},  
+ 3793303: function($0) {performance.now = function() { return $0; };},  
+ 3793351: function() {performance.now = Module['emscripten_get_now_backup'];},  
+ 3793406: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 3793467: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 3793531: function() {return Module.webglContextAttributes.powerPreference;}
 };
 
 
@@ -1989,6 +1989,7 @@ var ASM_CONSTS = {
 
 
 
+  var JsCall = {};
   function callRuntimeCallbacks(callbacks) {
       while (callbacks.length > 0) {
         var callback = callbacks.shift();
@@ -2127,6 +2128,18 @@ var ASM_CONSTS = {
       var js = jsStackTrace();
       if (Module['extraStackTrace']) js += '\n' + Module['extraStackTrace']();
       return demangleAll(js);
+    }
+
+  function _AddListener_(eventName, callbackID, callback) {
+      JsCall[callbackID] = {
+        object : callback,
+        event : Pointer_stringify(eventName)
+      };
+      document[JsCall[callbackID].event] = function() {
+        document[JsCall[callbackID].event] = null;
+        Runtime.dynCall('vi', JsCall[callbackID].object, [callbackID]);
+        delete JsCall[callbackID];
+      }
     }
 
   function _GetJSMemoryInfo(totalJSptr, usedJSptr) {
@@ -15441,6 +15454,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var asmLibraryArg = {
+  "AddListener_": _AddListener_,
   "GetJSMemoryInfo": _GetJSMemoryInfo,
   "JS_Accelerometer_IsRunning": _JS_Accelerometer_IsRunning,
   "JS_Accelerometer_Start": _JS_Accelerometer_Start,
@@ -18608,6 +18622,8 @@ unexportedRuntimeFunction('wr', false);
 unexportedRuntimeFunction('wr__user', false);
 unexportedRuntimeFunction('jsWebRequestGetResponseHeaderString', false);
 unexportedRuntimeFunction('jsWebRequestGetResponseHeaderString__user', false);
+unexportedRuntimeFunction('JsCall', false);
+unexportedRuntimeFunction('JsCall__user', false);
 unexportedRuntimeFunction('warnOnce', false);
 unexportedRuntimeFunction('stackSave', false);
 unexportedRuntimeFunction('stackRestore', false);
