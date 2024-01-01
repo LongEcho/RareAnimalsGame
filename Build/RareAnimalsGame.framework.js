@@ -1975,13 +1975,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  3793168: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 3793223: function($0) {performance.now = function() { return $0; };},  
- 3793271: function($0) {performance.now = function() { return $0; };},  
- 3793319: function() {performance.now = Module['emscripten_get_now_backup'];},  
- 3793374: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 3793435: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 3793499: function() {return Module.webglContextAttributes.powerPreference;}
+  3793264: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 3793319: function($0) {performance.now = function() { return $0; };},  
+ 3793367: function($0) {performance.now = function() { return $0; };},  
+ 3793415: function() {performance.now = Module['emscripten_get_now_backup'];},  
+ 3793470: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 3793531: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 3793595: function() {return Module.webglContextAttributes.powerPreference;}
 };
 
 
@@ -4378,6 +4378,13 @@ var ASM_CONSTS = {
   	{
   		HEAPF64[outWidth >> 3] = Module.SystemInfo.width;
   		HEAPF64[outHeight >> 3] = Module.SystemInfo.height;
+  	}
+
+  function _JS_SystemInfo_GetStreamingAssetsURL(buffer, bufferSize) 
+  	{
+  		if (buffer)
+  			stringToUTF8(Module.streamingAssetsUrl, buffer, bufferSize);
+  		return lengthBytesUTF8(Module.streamingAssetsUrl);
   	}
 
   function _JS_SystemInfo_HasAstcHdr()
@@ -15517,6 +15524,7 @@ var asmLibraryArg = {
   "JS_SystemInfo_GetOS": _JS_SystemInfo_GetOS,
   "JS_SystemInfo_GetPreferredDevicePixelRatio": _JS_SystemInfo_GetPreferredDevicePixelRatio,
   "JS_SystemInfo_GetScreenSize": _JS_SystemInfo_GetScreenSize,
+  "JS_SystemInfo_GetStreamingAssetsURL": _JS_SystemInfo_GetStreamingAssetsURL,
   "JS_SystemInfo_HasAstcHdr": _JS_SystemInfo_HasAstcHdr,
   "JS_SystemInfo_HasCursorLock": _JS_SystemInfo_HasCursorLock,
   "JS_SystemInfo_HasFullscreen": _JS_SystemInfo_HasFullscreen,
